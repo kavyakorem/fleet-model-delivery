@@ -1,0 +1,20 @@
+services:
+  control:
+    build: .
+    image: fleet-model-delivery:local
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["fleet-state:/app/state"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+  replay:
+    image: fleet-model-delivery:local
+    profiles: ["replay"]
+    depends_on:
+      control:
+        condition: service_healthy
+    command: ["python", "-m", "fleetops.replay", "--url", "http://control:8000", "--count", "96"]
+volumes:
+  fleet-state:

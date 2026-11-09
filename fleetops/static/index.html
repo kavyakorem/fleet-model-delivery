@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fleet Model Delivery</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/dashboard.js"></script>
+</head>
+<body>
+<main>
+  <header class="mast">
+    <div><p class="eyebrow">MODEL DELIVERY / OPERATIONS</p><h1>Fleet Model Delivery</h1>
+    <p class="sub">Fault detection from simulated robot telemetry.</p></div>
+    <div class="badge"><span></span> LOCAL SIMULATION</div>
+  </header>
+  <section class="cards" aria-label="Current metrics">
+    <article><span>Active release</span><strong id="active">—</strong><small>Receives production-route traffic in this demo</small></article>
+    <article><span>Canary release</span><strong id="candidate">—</strong><small id="share">Waiting for status</small></article>
+    <article><span>Observed windows</span><strong id="total">—</strong><small>Recorded in SQLite</small></article>
+    <article><span>Fault alerts</span><strong id="alerts">—</strong><small>Above the release's validation threshold</small></article>
+  </section>
+  <section class="grid">
+    <article class="panel">
+      <p class="eyebrow">CONTROL PLANE</p><h2>Release workflow</h2>
+      <p class="hint">Start a canary, replay labeled telemetry, then promote or roll back.</p>
+      <div class="actions">
+        <button id="canary">Start 40% canary</button>
+        <button id="replay">Replay 96 windows</button>
+        <button id="promote">Promote</button>
+        <button id="rollback" class="quiet">Roll back</button>
+      </div>
+      <p class="notice" id="notice" role="status">Waiting for status…</p>
+      <h3>Canary evidence</h3><dl id="trial"></dl>
+      <h3>Release history</h3><ul id="history"></ul>
+    </article>
+    <article class="panel">
+      <p class="eyebrow">VALIDATION</p><h2>Offline release gates</h2>
+      <p class="hint">Compare held-out quality, parity, and CPU inference latency.</p>
+      <div class="table-wrap"><table><thead><tr><th>Check</th><th>Observed</th><th>Required</th><th>Status</th></tr></thead><tbody id="gates"></tbody></table></div>
+      <h3>Held-out model quality</h3>
+      <div class="table-wrap"><table><thead><tr><th>Release</th><th>F1</th><th>Recall</th><th>CPU p95</th></tr></thead><tbody id="models"></tbody></table></div>
+    </article>
+  </section>
+  <article class="panel telemetry">
+    <div class="panel-head"><div><p class="eyebrow">INFERENCE</p><h2>Recent telemetry</h2></div>
+    <a href="/metrics">Prometheus metrics ↗</a></div>
+    <div class="table-wrap"><table><thead><tr><th>Robot</th><th>Release</th><th>Fault probability</th><th>Decision</th><th>Label</th><th>Inference</th></tr></thead><tbody id="recent"></tbody></table></div>
+  </article>
+  <footer>Simulated data only · <a href="/docs">API documentation</a></footer>
+</main>
+</body></html>
